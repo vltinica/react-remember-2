@@ -12,11 +12,15 @@ const initialGameBoard = [
 ];
 
 function App() {
+  const [players, setPlayers] = useState({
+    X: "Player 1",
+    0: "Player 2"
+  })
   const [gameTurns, setGameTurns] = useState([]);
   const [activePlayer, setActivePlayer] = useState("X");
   // const [hasWinner, setHasWinner] = useState(false)
 
-let gameBoard = initialGameBoard.map((row) => [...row]);
+let gameBoard =[...initialGameBoard.map((row) => [...row])];
 
   for (const turn of gameTurns) {
     const { square, player } = turn;
@@ -39,7 +43,7 @@ let gameBoard = initialGameBoard.map((row) => [...row]);
       firstSquareSymbol === secondtSquareSymbol &&
       firstSquareSymbol === thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol;
+      winner = players[firstSquareSymbol];
     }
   }
 
@@ -71,6 +75,17 @@ let gameBoard = initialGameBoard.map((row) => [...row]);
     setGameTurns([])
   }
 
+  function handlePlayerNameChange(symbol, newName) {
+    setPlayers(
+      prevPlayers => {
+        return {
+          ...prevPlayers, 
+          [symbol]: newName
+        }
+      }
+    )
+  }
+
   return (
     <>
       <main>
@@ -81,6 +96,7 @@ let gameBoard = initialGameBoard.map((row) => [...row]);
               initialName="Player 1"
               symbol="X"
               isActive={activePlayer === "X"}
+              onChangeName={handlePlayerNameChange}
             />
             <Player
               initialName="Player 2"
